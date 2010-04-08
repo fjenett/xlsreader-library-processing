@@ -20,3 +20,6 @@ build/
 # old stuff i can't seem to be able to delete
 hidden/
 releases/
+
+# no need to track this ..
+lib/build.number

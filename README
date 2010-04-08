@@ -1,10 +1,19 @@
 --------------------------------------------------------------------------------
 
-    XlsReader is a Processing library that can read from .xls files
+    XlsReader is a Processing library that that provides access
+    to .xls (Excel) files.
     
 --------------------------------------------------------------------------------
 
-    ...
+    .xls files are a databaseske and widespread format. This library
+    provides you with a simple iteratable reader.
+    
+--------------------------------------------------------------------------------
+
+    There's currently an unresolved issue that will prevent this library
+    from working in (unsigned) applets.
+    
+    http://github.com/fjenett/xlsreader/issues#issue/1
     
 --------------------------------------------------------------------------------
 
