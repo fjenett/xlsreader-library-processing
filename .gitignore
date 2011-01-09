@@ -6,7 +6,7 @@
 bin/
 
 # hide some results
-documentation/*
+#documentation/*
 distribution/*
 
 # XCode
@@ -24,3 +24,5 @@ releases/
 
 # no need to track this ..
 lib/build.number
+
+lib/poi-3*

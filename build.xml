@@ -20,16 +20,15 @@
 	<property name="author" value="Florian Jenett"/>
 	<property name="copyright" value="(c) 2007 - 2011"/>
 	<property name="libraryName"  value="XlsReader"/>
-	<property name="versionNumber"  value="0.1.0"/>
+	<property name="versionNumber"  value="0.1.1"/>
 	<property name="yourLink"  value="http://bezier.de/" />
 	<property name="keywords" value="Excel, reader, xls, data"/>
 	<property name="javaVersion" value="1.5"/>
 	
 	<path id="library-classes-add">
-		<fileset dir="lib">
-			<include name="poi-3.0.1-FINAL-20070705.jar"/>
-			<include name="poi-contrib-3.0.1-FINAL-20070705.jar"/>
-			<include name="poi-scratchpad-3.0.1-FINAL-20070705.jar"/>
+		<fileset dir="lib/poi-3.7/">
+			<include name="poi-3*.jar"/>
+			<include name="poi-scratchpad-*.jar"/>
 		</fileset>
 	</path>
 	<path id="library-classpath">
@@ -98,13 +97,19 @@ java version		${javaVersion}
   	<mkdir dir="${dist}/library" />
   	<mkdir dir="${dist}/examples" />
   	<mkdir dir="${dist}/documentation" />
-  	<jar jarfile="${dist}/library/${jarFile}" basedir="${bin}"/>
+	
+  	<jar jarfile="library/${jarFile}" basedir="${bin}"/>
+	<copy todir="library">
+  		<path refid="library-classes-add" />
+  	</copy> 
+	
+	<copy todir="${dist}/library">
+  		<fileset dir="library"/>
+  	</copy>
+	
   	<copy todir="${dist}/examples">
   		<fileset dir="examples"/>
   	</copy>
-	<copy todir="${dist}/library">
-  		<path refid="library-classes-add" />
-  	</copy> 
   	
 	<!-- create the java documentation of the library -->
  	<mkdir dir="${javadoc}" />
@@ -127,6 +132,7 @@ java version		${javaVersion}
 	</copy>
   	
   	  	<!-- copy the jar file to processing's libraries -->
+  	  	<delete dir="${processing}/${libraryName}" />
   	  	<mkdir dir="${processing}/${libraryName}" />
   		<copy todir="${processing}/${libraryName}">
   			<fileset dir="${dist}"/>
@@ -150,7 +156,7 @@ java version		${javaVersion}
   		<fileset dir="${dist}/examples" />
   	</move>
   	
-  	<delete dir="${dist}/library" />
+  	<!--delete dir="${dist}/library" /-->
   	
   	<copy todir="${dist}/web">
   		<fileset dir="web" />
@@ -210,10 +216,14 @@ java version		${javaVersion}
  
  
 	<!-- XCode clean target task -->
-	<target name="clean" >
+	<target name="clean" depends="settings">
+		<echo>Starting clean ..</echo>
 		<delete dir="${dist}" />
+		<delete dir="${bin}" />
 		<delete dir="${javadoc}" />
 		<delete dir="${build}" />
+		<delete dir="library" />
+		<echo>Done clean ..</echo>
 	</target> 
 	
 	
