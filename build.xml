@@ -18,9 +18,9 @@
 <!-- == No changes or adjustments required below == -->
 
 	<property name="author" value="Florian Jenett"/>
-	<property name="copyright" value="(c) 2007 - 2008"/>
+	<property name="copyright" value="(c) 2007 - 2011"/>
 	<property name="libraryName"  value="XlsReader"/>
-	<property name="versionNumber"  value="0.0.10"/>
+	<property name="versionNumber"  value="0.1.0"/>
 	<property name="yourLink"  value="http://bezier.de/" />
 	<property name="keywords" value="Excel, reader, xls, data"/>
 	<property name="javaVersion" value="1.5"/>

@@ -1,5 +1,6 @@
 # Mac fun
 .DS_Store
+.xcodeproj
 
 # ant-javac build directory
 bin/
