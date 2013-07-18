@@ -102,13 +102,10 @@ java version		 ${javaVersion}
 	  	<mkdir dir="${dist}/examples" />
 	  	<mkdir dir="${dist}/documentation" />
 		
-	  	<jar jarfile="library/${jarFile}" basedir="${bin}"/>
-		<copy todir="library">
-	  		<path refid="library-classes-add" />
-	  	</copy> 
-		
+	  	<jar jarfile="${dist}/library/${jarFile}" basedir="${bin}"/>
+
 		<copy todir="${dist}/library">
-	  		<fileset dir="library"/>
+	  		<path refid="library-classes-add" />
 	  	</copy>
 		
 	  	<copy todir="${dist}/examples">
@@ -143,12 +140,56 @@ java version		 ${javaVersion}
   			<fileset dir="${dist}"/>
   		</copy> 
 
-	  	<!-- zip the distribution of the library -->
-		<!-- <zip destfile="releases/${libraryName}-${versionNumber}.zip"
-	  	       basedir="${dist}"
-	  	       excludes="**/_DS.Store" /> -->
+	  	<!-- finish library's distribution -->
 	  	
-	  	<!-- organize the ${dist} folder -->
+	  	<copy todir="${processing}/${libraryName}/documentation">
+			<fileset dir="${javadoc}" />
+		</copy>
+
+		<!-- add more -->
+
+		<copy todir="${dist}/source">
+			<fileset dir="${src}" />
+		</copy>
+
+		<copy todir="${dist}">
+			<fileset file="resources/library.properties" />
+			<fileset file="readme.md" />
+		</copy>
+
+		<replaceregexp file="${dist}/library.properties" flags="g"
+  					   match="@@LIBRARY_NAME@@" replace="${libraryName}" />
+		<replaceregexp file="${dist}/library.properties" flags="g"
+  					   match="@@VERSION@@" replace="${build.number}" />
+		<replaceregexp file="${dist}/library.properties" flags="g"
+  					   match="@@PRETTY_VERSION@@" replace="${versionNumber}" />
+
+		<!-- zip the distribution of the library -->
+
+	  	<zip destfile="releases/${libraryName}-${versionNumber}.zip">
+	  		<zipfileset dir="">
+				<include name="${dist}/**/**" />
+			</zipfileset>
+	  	</zip>
+
+		<!-- library contribution system -->
+
+		<mkdir dir="release" />
+
+		<copy file="releases/${libraryName}-${versionNumber}.zip" 
+			  tofile="release/${libraryName}.zip" />
+
+		<copy file="${dist}/library.properties" 
+			  tofile="release/${libraryName}.txt" />
+	  	
+	  	<!-- done, finished. -->
+
+	  	<delete dir="${dist}" />
+	</target>
+
+	<target name="web">
+
+		<!-- organize the ${dist} folder -->
 	  	<mkdir dir="web" />
 
 	  	<copy todir="web/documentation">
@@ -161,7 +202,7 @@ java version		 ${javaVersion}
 	  	
 	  	<!--delete dir="${dist}/library" /-->
 	  	
-<!-- 	  	<copy todir="web">
+		<!-- <copy todir="web">
 	  		<fileset dir="web" />
 	  	</copy> -->
 	  	
@@ -204,51 +245,10 @@ java version		 ${javaVersion}
 								
 								
 		<!-- <antcall target="processExamples" /> -->
-		
-	  	<!-- finish library's distribution -->
-	  	
-	  	<copy todir="${processing}/${libraryName}/documentation">
-			<fileset dir="${javadoc}" />
-		</copy>
-
-		<!-- add more -->
-
-		<copy todir="${dist}/source">
-			<fileset dir="${src}" />
-		</copy>
-
-		<copy todir="${dist}">
-			<fileset file="resources/library.properties" />
-			<fileset file="readme.md" />
-		</copy>
-
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@LIBRARY_NAME@@" replace="${libraryName}" />
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@VERSION@@" replace="${build.number}" />
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@PRETTY_VERSION@@" replace="${versionNumber}" />
-
-		<!-- zip the distribution of the library -->
-
-	  	<zip destfile="releases/${libraryName}-${versionNumber}.zip">
-	  		<zipfileset dir="">
-				<include name="${dist}/**/**" />
-			</zipfileset>
-	  	</zip>
-
-		<!-- library contribution system -->
-
-		<mkdir dir="release" />
-
-		<copy file="releases/${libraryName}-${versionNumber}.zip" tofile="release/${libraryName}.zip" />
-
-		<copy file="${dist}/library.properties" tofile="release/${libraryName}.txt" />
 
 	  	<mkdir dir="web/download" />
 	  	<copy file="releases/${libraryName}-${versionNumber}.zip" todir="web/download" />
-	  	
-	  	<!-- done, finished. -->
+
 	</target>
  
  

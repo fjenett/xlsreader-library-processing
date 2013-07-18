@@ -28,3 +28,6 @@ lib/build.number
 lib/poi-3*XlsReader
 web
 lib/poi-*
+XlsReader/*
+documentation/*
+library/*
