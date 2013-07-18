@@ -1,11 +1,14 @@
 /**
  *    An example showing how to read many values from a xls file.
- *    Note that many latitude / longitue values are wrong ... i used yahoo to grab them and it reports streets / villages in the us for some cities.
+ *    Note that many latitude / longitue values are wrong ... i used yahoo to grab 
+ *    them and it reports streets / villages in the us for some cities.
  *
  *    The original dataset (without lat/lon) originates from Eurostat:
  *    http://epp.eurostat.ec.europa.eu/tgm/table.do?tab=table&init=1&plugin=1&language=de&pcode=tgs00013
  *
- *    fjenett 20081111
+ *    created fjenett 20081111
+ *    updated fjenett 20130718
+ *    tested Processing 2.0
  */
 
 // import library

@@ -25,4 +25,6 @@ releases/
 # no need to track this ..
 lib/build.number
 
-lib/poi-3*
+lib/poi-3*XlsReader
+web
+lib/poi-*
