@@ -10,6 +10,11 @@ provides you with a simple iteratable reader.
 
 ----------------------------------------------------------------------------
 
+Latest release (same as in the Processing library manager):
+https://raw.github.com/fjenett/xlsreader-library-processing/latest/release/XlsReader.zip
+
+----------------------------------------------------------------------------
+
 Last checked with Processing 2.0.1 but not intensively. Please report bugs /
 if you find any or suggestions if you have any here:
 http://github.com/fjenett/xlsreader/issues
