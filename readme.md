@@ -11,7 +11,7 @@ provides you with a simple iteratable reader.
 Latest release:
 https://github.com/fjenett/xlsreader-library-processing/raw/latest/release/XlsReader.zip
 
-Tested with Processing 3.x and 4.x.
+Current version 0.1.2. has been tested with Processing 3.5.x and 4.1.x. Enjoy.
 
 ## Contribute
 
