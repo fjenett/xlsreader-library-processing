@@ -433,6 +433,40 @@ public class XlsReader
 		}
 		return null;
 	}
+
+	/**
+	 * Return the cell type of a cell.
+	 *
+	 * Types are:
+	 * - String
+	 * - Numeric
+	 * - Boolean
+	 * - Blank
+	 * - Formula
+	 * - Error (cell has an error)
+	 * - Unknown (not empty but unknown content)
+	 *
+	 * @return The type / name of the cell type as String. Returns Null otherwise.
+	 */
+	public String getCellType () {
+		if ( cell != null ) {
+			CellType type = cell.getCellType();
+
+			// See types here:
+			// https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellType.html
+			switch (type) {
+				case STRING: return "String";
+				case NUMERIC: return "Numeric";
+				case BLANK: return "Blank";
+				case BOOLEAN: return "Boolean";
+				case FORMULA: return "Formula";
+				case ERROR: return "Error";
+				case _NONE: return "Unknown";
+			}
+		}
+
+		return Null;
+	}
 	
 	/**
 	*	Return an int value from the selected cell of the selected row of current sheet.
