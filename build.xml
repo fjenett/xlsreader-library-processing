@@ -1,298 +1,357 @@
 <project name="XlsReader library" default="build" basedir="./">
-    
-	<description>
-		This XlsReader build file is based upon
-		the Processing libraries build file.
-	</description>
-	
-	<target name="settings">
-	
-<!-- == These two need to be set for building. == -->
 
-	<!-- ... the path to Processings libraries (core.jar, etc) -->
-	<!-- property name="libraryClasspath" 
-				  location="/Applications/Processing.app/Contents/Resources/Java/"/ -->
-	<property name="libraryClasspath" 
-			  location="/Users/fjenett/Repos/processing/build/macosx/work/Processing.app/Contents/Resources/Java/" />
-	
-	<!-- ... the user libraries folder inside your Processing sketchbook -->
-	<property name="processing" 
-			  location="/Users/fjenett/Documents/Processing/libraries"/>
+    <description>
+        This XlsReader build file is based upon
+        the Processing libraries build file.
+    </description>
 
-<!-- == No changes or adjustments required below == -->
+    <target name="settings">
 
-	<property name="author" 		value="Florian Jenett"/>
-	<property name="copyright" 		value="(c) 2007 - 2013"/>
-	<property name="libraryName"  	value="XlsReader"/>
-	<property name="versionNumber"  value="0.1.2"/>
-	<property name="yourLink"  		value="http://bezier.de/" />
-	<property name="keywords" 		value="Excel, reader, xls, data"/>
-	<property name="javaVersion" 	value="1.5"/>
-	
-	<path id="library-classes-add">
-		<fileset dir="lib/poi-3.7/">
-			<include name="poi-3*.jar"/>
-			<include name="poi-scratchpad-*.jar"/>
-		</fileset>
-	</path>
-	<path id="library-classpath">
-		<fileset dir="${libraryClasspath}" >
-			<include name="core/library/core.jar"/>
-		</fileset>
-		<path refid="library-classes-add" />
-	</path>
-	
-	<property name="jarFile" value="${libraryName}.jar"/>
-	<property name="src" 	 location="src"/>
-	<property name="bin" 	 location="bin"/>
-	<property name="javadoc" location="documentation"/>
-	<property name="dist" 	 value="${libraryName}"/>
-	<property name="build" 	 location="build"/>
-	
-<echo>Properties initialized.
-src path			 ${src}
-bin path 			 ${bin}
-libraryClasspath	 ${libraryClasspath}
-processing Libraries ${processing}
-java version		 ${javaVersion}
-</echo>
-	</target>
-	
-	<target name="init" depends="settings">
-	
-	<buildnumber file="lib/build.number"/>
-	<tstamp> <!-- Create the time stamp -->
-		<format property="date" pattern="MM/dd/yyyy" offset="0" unit="hour"/>
-	</tstamp>
+        <!-- == Change these two for building == -->
 
-	<echo>Start to build the library ... this is vers. ${versionNumber}, build #${build.number} on ${date}</echo>
+        <property file="local.properties"/>
+        <property name="poi.version" value="5.2.3"/>
 
-<!--
-	add ant-contrib package, needed for <foreach>
--->
-<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-  <classpath>
-    <pathelement location="lib/ant-contrib-1.0b3.jar"/>
-  </classpath>
-</taskdef>
+        <condition property="props.present">
+            <available file="local.properties"/>
+        </condition>
 
-	<mkdir dir="${dist}"/>
-  </target>
-  
-  <!--echo>${toString:library-classpath}</echo-->
-  
-	<!-- compile the library -->
-  <target name="compile" depends="init" description="compile the source" >  	
-		<mkdir dir="${bin}"/>
-		<javac srcdir="${src}" destdir="${bin}" source="${javaVersion}" target="${javaVersion}">
-			<classpath>
-				<path refid="library-classpath"/>
-			</classpath>
-		</javac>
-  </target>
+        <fail unless="processing.dir"
+              message="To make the build work, create a file named local.properties, with the following:
+${line.separator}processing.dir=/path/to/processing-git
+${line.separator}with the path to where you have the code for Processing checked out.
+${line.separator}(This script will look for the 'core' directory inside that folder.)"/>
+        <fail unless="libraries.dir"
+              message="To make the build work, create a file named local.properties, with the following
+${line.separator}libraries.dir=/path/to/sketchbook/libraries
+${line.separator}with the full path to the 'libraries' folder inside your sketchbook."/>
 
-	<!-- build the distribution of the library -->
-  	<target name="build" depends="compile" description="generate the distribution" >
-	  	<!-- delete the previous content of the ${dist} folder -->
-	  	<delete dir="${dist}" />
-	  	
-	  	<!-- build the structure for ${dist} -->
-	  	<mkdir dir="${dist}" />
-	  	<mkdir dir="${dist}/library" />
-	  	<mkdir dir="${dist}/examples" />
-	  	<mkdir dir="${dist}/reference" />
-		
-	  	<jar jarfile="${dist}/library/${jarFile}" basedir="${bin}"/>
+        <!-- == No changes or adjustments required below == -->
 
-		<copy todir="${dist}/library">
-	  		<path refid="library-classes-add" />
-	  	</copy>
-		
-	  	<copy todir="${dist}/examples">
-	  		<fileset dir="examples"/>
-	  	</copy>
-	  	
-		<!-- create the java documentation of the library -->
-	 	<mkdir dir="${javadoc}" />
-	 	<javadoc bottom="processing library ${libraryName} by ${author}. ${copyright}"
-				 destdir="${javadoc}" 
-				 verbose="false" 
-				 stylesheetfile="resources/stylesheet.css" 
-				 doctitle="Javadocs: ${libraryName}" 
-				 public="true" version="false" 
-				 windowtitle="Javadocs: ${libraryName}">
-	 		<fileset dir="${src}" defaultexcludes="yes">
-				<include name="**/*"/>
-			</fileset>
-			<classpath>
-				<path refid="library-classpath" />
-			</classpath>
-	 	</javadoc>
+        <property name="author" value="Florian Jenett"/>
+        <property name="copyright" value="(c) 2007 - 2023"/>
+        <property name="library.name" value="XlsReader"/>
+        <property name="version_number" value="0.1.2"/>
+        <property name="project.url" value="http://bezier.de/"/>
+        <property name="keywords" value="Excel, reader, xls, data"/>
+        <property name="javaVersion" value="1.8"/>
 
-		<copy todir="${dist}/reference">
-			<fileset dir="${javadoc}" />
-		</copy>
-	  	
-  	  	<!-- copy the jar file to processing's libraries -->
-  	  	<delete dir="${processing}/${libraryName}" />
-  	  	<mkdir dir="${processing}/${libraryName}" />
-  		<copy todir="${processing}/${libraryName}">
-  			<fileset dir="${dist}"/>
-  		</copy> 
+        <path id="library-classes-add">
+            <fileset dir="lib/poi-${poi.version}/">
+                <include name="poi-${poi.version}.jar"/>
+                <include name="poi-scratchpad-${poi.version}.jar"/>
+            </fileset>
+            <fileset dir="lib/poi-${poi.version}/lib/">
+                <include name="commons-io-*.jar"/>
+                <include name="log4j-*.jar"/>
+            </fileset>
+            <fileset dir="lib/apache-log4j-2.19.0-bin/">
+                <include name="log4j-core-*.jar"/>
+            </fileset>
+        </path>
+        <path id="library-classpath">
+            <fileset dir="${processing.dir}">
+                <include name="core/library/core.jar"/>
+            </fileset>
+            <path refid="library-classes-add"/>
+        </path>
 
-	  	<!-- finish library's distribution -->
-	  	
-	  	<copy todir="${processing}/${libraryName}/reference">
-			<fileset dir="${javadoc}" />
-		</copy>
+        <property name="jarFile" value="${library.name}.jar"/>
+        <property name="src" location="src"/>
+        <property name="bin" location="bin"/>
+        <property name="javadoc" location="documentation"/>
+        <property name="dist" value="${library.name}"/>
+        <property name="build" location="build"/>
 
-		<!-- add more -->
+        <echo>Properties initialized.
+            src path ${src}
+            bin path ${bin}
+            libraryClasspath ${processing.dir}
+            processing Libraries ${libraries.dir}
+            java version ${javaVersion}
+        </echo>
+    </target>
 
-		<copy todir="${dist}/src">
-			<fileset dir="${src}" />
-		</copy>
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        INIT
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="init" depends="settings">
 
-		<copy todir="${dist}">
-			<fileset file="resources/library.properties" />
-			<fileset file="readme.md" />
-		</copy>
+        <buildnumber file="lib/build.number"/>
+        <tstamp> <!-- Create the time stamp -->
+            <format property="date" pattern="MM/dd/yyyy" offset="0" unit="hour"/>
+        </tstamp>
 
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@LIBRARY_NAME@@" replace="${libraryName}" />
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@VERSION@@" replace="${build.number}" />
-		<replaceregexp file="${dist}/library.properties" flags="g"
-  					   match="@@PRETTY_VERSION@@" replace="${versionNumber}" />
+        <echo>Start to build the library ... this is vers. ${version_number}, build #${build.number} on ${date}</echo>
 
-		<!-- zip the distribution of the library -->
+        <!--
+            add ant-contrib package, needed for <foreach>
+        -->
+        <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+            <classpath>
+                <pathelement location="lib/ant-contrib-1.0b3.jar"/>
+            </classpath>
+        </taskdef>
 
-	  	<zip destfile="releases/${libraryName}-${versionNumber}.zip">
-	  		<zipfileset dir="">
-				<include name="${dist}/**/**" />
-			</zipfileset>
-	  	</zip>
+    </target>
 
-		<!-- library contribution system -->
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        COMPILE
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="compile" depends="init" description="compile the source">
+        <mkdir dir="${bin}"/>
+        <javac srcdir="${src}" destdir="${bin}" source="${javaVersion}" target="${javaVersion}">
+            <classpath>
+                <path refid="library-classpath"/>
+            </classpath>
+        </javac>
+    </target>
 
-		<mkdir dir="release" />
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        BUILD
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="build" depends="compile" description="generate library jar and collect other jars">
+        <!-- delete the previous content of the ${dist} folder -->
+        <delete dir="${dist}"/>
 
-		<copy file="releases/${libraryName}-${versionNumber}.zip" 
-			  tofile="release/${libraryName}.zip" />
+        <!-- build the structure for ${dist} -->
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${dist}/library"/>
 
-		<copy file="${dist}/library.properties" 
-			  tofile="release/${libraryName}.txt" />
-	  	
-	  	<!-- done, finished. -->
+        <jar jarfile="${dist}/library/${jarFile}" basedir="${bin}"/>
 
-	  	<delete dir="${dist}" />
-	</target>
+        <copy todir="${dist}/library">
+            <path refid="library-classes-add"/>
+        </copy>
 
-	<target name="web">
+    </target>
 
-		<!-- organize the ${dist} folder -->
-	  	<mkdir dir="web" />
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        EXAMPLES
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="examples" depends="build" description="add examples to dist directory">
+        <mkdir dir="${dist}/examples"/>
 
-	  	<copy todir="web/documentation">
-	  		<fileset dir="${dist}/reference" />
-	  	</copy>
-	  	
-	  	<copy todir="web/examples">
-	  		<fileset dir="${dist}/examples" />
-	  	</copy>
-	  	
-	  	<!--delete dir="${dist}/library" /-->
-	  	
-		<!-- <copy todir="web">
-	  		<fileset dir="web" />
-	  	</copy> -->
-	  	
-	  	<!--
-	  	format the index.html file. 
-	  	regular expressions are used to parse the web index.html file. 
-	  	key words starting and ending with ## are replaced by values 
-	  	defined earlier in the beginning of this build file.
-	  	-->
-	  	
-	  	<replaceregexp file="web/index.html"
-	  	                         match="##yourLibrary##"
-	  	                         replace="${libraryName}"
-	  	                         flags="g" />
-	  	
-	  	<replaceregexp file="web/index.html"
-								match="##author##"
-								replace="${author}"
-								flags="g" />
-	  	
-	  	<replaceregexp file="web/index.html"
-								match="##versionNumber##"
-								replace="${versionNumber}"
-								flags="g" />
-	  	
-		<replaceregexp file="web/index.html"
-								match="##yourLink##"
-	  							replace="${yourLink}"
-								flags="g" />
-	  	
-	  	<replaceregexp file="web/index.html"
-	  							match="##date##"
-	  	  						replace="${date}"
-	  	  						flags="g" />
-	  	
-	  	<replaceregexp file="web/index.html"
-	  							match="##keywords##"
-	  	  						replace="${keywords}"
-	  	  						flags="g" />
-								
-								
-		<!-- <antcall target="processExamples" /> -->
+        <copy todir="${dist}/examples">
+            <fileset dir="examples"/>
+        </copy>
+    </target>
 
-	  	<mkdir dir="web/download" />
-	  	<copy file="releases/${libraryName}-${versionNumber}.zip" todir="web/download" />
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        DOCUMENTATION
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="documentation" depends="build" description="generate documentation and add to dist directory">
+        <!-- create the java documentation of the library -->
+        <mkdir dir="${javadoc}"/>
+        <javadoc bottom="processing library ${library.name} by ${author}. ${copyright}"
+                 destdir="${javadoc}"
+                 verbose="false"
+                 stylesheetfile="resources/stylesheet.css"
+                 doctitle="Javadocs: ${library.name}"
+                 public="true" version="false"
+                 windowtitle="Javadocs: ${library.name}">
+            <fileset dir="${src}" defaultexcludes="yes">
+                <include name="**/*"/>
+            </fileset>
+            <classpath>
+                <path refid="library-classpath"/>
+            </classpath>
+        </javadoc>
 
-	</target>
- 
- 
-	<!-- XCode clean target task -->
-	<target name="clean" depends="settings">
-		<echo>Starting clean ..</echo>
-		<delete dir="${dist}" />
-		<delete dir="${bin}" />
-		<delete dir="${javadoc}" />
-		<delete dir="${build}" />
-		<delete dir="library" />
-		<echo>Done clean ..</echo>
-	</target> 
-	
-	
-	<!-- parsing the examples folder -->
-	<target name="processExamples">
-		<dirset id="examples.contents" dir="examples" excludes="*/*"/>
-		<property name="examples.list" refid="examples.contents"/>
-		<foreach list="${examples.list}" target="addExamples" param="exampleDir" delimiter=";">
-		</foreach>
-		<!--echo>${examples.list}</echo-->
-		<!--foreach param="exampleDir" target="addExamples">
-			<path>
-				<dirset id="examples.contents" dir="examples" excludes="*/*"/>
-			</path>
-		</foreach-->
-		<replaceregexp 
-			file="web/index.html"
-  			match="(##examples##)"
-  	  		replace=""
-  	  		flags="g" />
-	</target>
-		
-	<target name="addExamples" depends="settings">
-		<property name="exampleZipped" value="${exampleDir}.zip"/>
-		<zip destfile="web/examples/${exampleZipped}"
-  	       basedir="web/examples/${exampleDir}/"
-  	       excludes="**/_DS.Store" />
-		<replaceregexp 
-			file="web/index.html"
-  			match="(##examples##)"
-  	  		replace="&lt;li&gt;&lt;a href=&quot;examples/${exampleZipped}&quot;&gt;${exampleDir}&lt;/a&gt;&lt;/li&gt; \1"
-  	  		flags="g" />
-	</target>
+        <mkdir dir="${dist}/reference"/>
+
+        <copy todir="${dist}/reference">
+            <fileset dir="${javadoc}"/>
+        </copy>
+
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        PACKAGE the library
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="package"  depends="documentation,examples" description="assemble all files">
+        <!-- Add sources -->
+
+        <copy todir="${dist}/src">
+            <fileset dir="${src}"/>
+        </copy>
+
+        <!-- Add properties file and README -->
+
+        <copy todir="${dist}">
+            <fileset file="resources/library.properties"/>
+            <fileset file="readme.md"/>
+        </copy>
+
+        <replaceregexp file="${dist}/library.properties" flags="g"
+                       match="@@LIBRARY_NAME@@" replace="${library.name}"/>
+        <replaceregexp file="${dist}/library.properties" flags="g"
+                       match="@@VERSION@@" replace="${build.number}"/>
+        <replaceregexp file="${dist}/library.properties" flags="g"
+                       match="@@PRETTY_VERSION@@" replace="${version_number}"/>
+
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        INSTALL the library in local Processing
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="install" depends="package" description="install the library to local processing">
+
+        <!-- copy the jar file to processing's libraries -->
+        <delete dir="${libraries.dir}/${library.name}"/>
+        <mkdir dir="${libraries.dir}/${library.name}"/>
+
+        <copy todir="${libraries.dir}/${library.name}">
+            <fileset dir="${dist}"/>
+        </copy>
+
+        <!-- finish library's distribution -->
+        <!--        <copy todir="${libraries.dir}/${library.name}/reference">
+                    <fileset dir="${javadoc}"/>
+                </copy>-->
+
+        <!-- done, finished. -->
+
+        <!--<delete dir="${dist}"/>-->
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        RELEASE a version
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="release" depends="package" description="generate a release package">
+
+        <delete dir="release"/>
+        <mkdir dir="release"/>
+
+        <!-- zip the distribution of the library -->
+
+        <zip destfile="releases/${library.name}-${version_number}.zip">
+            <zipfileset dir="">
+                <include name="${dist}/**/**"/>
+            </zipfileset>
+        </zip>
+
+        <copy file="releases/${library.name}-${version_number}.zip"
+              tofile="release/${library.name}.zip"/>
+
+        <copy file="${dist}/library.properties"
+              tofile="release/${library.name}.txt"/>
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        WEBSITE
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="web" depends="documentation, examples" description="generate a website">
+
+        <!-- organize the ${dist} folder -->
+        <mkdir dir="web"/>
+
+        <copy todir="web/documentation">
+            <fileset dir="${dist}/reference"/>
+        </copy>
+
+        <copy todir="web/examples">
+            <fileset dir="${dist}/examples"/>
+        </copy>
+
+        <!--delete dir="${dist}/library" /-->
+
+        <!-- <copy todir="web">
+              <fileset dir="web" />
+          </copy> -->
+
+        <!--
+        format the index.html file.
+        regular expressions are used to parse the web index.html file.
+        key words starting and ending with ## are replaced by values
+        defined earlier in the beginning of this build file.
+        -->
+
+        <replaceregexp file="web/index.html"
+                       match="##yourLibrary##"
+                       replace="${library.name}"
+                       flags="g"/>
+
+        <replaceregexp file="web/index.html"
+                       match="##author##"
+                       replace="${author}"
+                       flags="g"/>
+
+        <replaceregexp file="web/index.html"
+                       match="##version_number##"
+                       replace="${version_number}"
+                       flags="g"/>
+
+        <replaceregexp file="web/index.html"
+                       match="##project.url##"
+                       replace="${project.url}"
+                       flags="g"/>
+
+        <replaceregexp file="web/index.html"
+                       match="##date##"
+                       replace="${date}"
+                       flags="g"/>
+
+        <replaceregexp file="web/index.html"
+                       match="##keywords##"
+                       replace="${keywords}"
+                       flags="g"/>
+
+
+        <!-- <antcall target="processExamples" /> -->
+
+        <mkdir dir="web/download"/>
+        <copy file="releases/${library.name}-${version_number}.zip" todir="web/download"/>
+
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        CLEAN
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="clean" depends="settings">
+        <echo>Starting clean ..</echo>
+        <delete dir="${dist}"/>
+        <delete dir="${bin}"/>
+        <delete dir="${javadoc}"/>
+        <delete dir="${build}"/>
+        <delete dir="library"/>
+        <echo>Done clean ..</echo>
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        EXAMPLES, all
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="processExamples">
+        <dirset id="examples.contents" dir="examples" excludes="*/*"/>
+        <property name="examples.list" refid="examples.contents"/>
+        <foreach list="${examples.list}" target="addExamples" param="exampleDir" delimiter=";">
+        </foreach>
+        <!--echo>${examples.list}</echo-->
+        <!--foreach param="exampleDir" target="addExamples">
+            <path>
+                <dirset id="examples.contents" dir="examples" excludes="*/*"/>
+            </path>
+        </foreach-->
+        <replaceregexp
+                file="web/index.html"
+                match="(##examples##)"
+                replace=""
+                flags="g"/>
+    </target>
+
+    <!-- + + + + + + + + + + + + + + + + + + + + + + +
+        EXAMPLES, one
+     + + + + + + + + + + + + + + + + + + + + + + + -->
+    <target name="addExamples" depends="settings">
+        <property name="exampleZipped" value="${examples.dir}.zip"/>
+        <zip destfile="web/examples/${exampleZipped}"
+             basedir="web/examples/${examples.dir}/"
+             excludes="**/_DS.Store"/>
+        <replaceregexp
+                file="web/index.html"
+                match="(##examples##)"
+                replace="&lt;li&gt;&lt;a href=&quot;examples/${exampleZipped}&quot;&gt;${examples.dir}&lt;/a&gt;&lt;/li&gt; \1"
+                flags="g"/>
+    </target>
 </project>
 

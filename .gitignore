@@ -34,3 +34,4 @@ library/*
 .idea/
 local.properties
 xlsreader-library-processing.iml
+lib/apache-log4j*
