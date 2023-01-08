@@ -448,7 +448,10 @@ public class XlsReader
 	 *
 	 * @return The type / name of the cell type as String. Returns Null otherwise.
 	 */
-	public String getCellType () {
+	public String getCellType ( int rowNum, int cellNum ) {
+
+		HSSFCell cell = getCell(rowNum,cellNum);
+
 		if ( cell != null ) {
 			CellType type = cell.getCellType();
 
