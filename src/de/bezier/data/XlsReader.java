@@ -446,6 +446,9 @@ public class XlsReader
 	 * - Error (cell has an error)
 	 * - Unknown (not empty but unknown content)
 	 *
+	 *	@param	rowNum	Row (vertically) to read from. First row is 0.
+	 *	@param	cellNum Cell (horizontal) in the row to read from. Starts at 0.
+	 *
 	 * @return The type / name of the cell type as String. Returns Null otherwise.
 	 */
 	public String getCellType ( int rowNum, int cellNum ) {
