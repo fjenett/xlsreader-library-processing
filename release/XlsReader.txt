@@ -4,5 +4,5 @@ url = https://github.com/fjenett/xlsreader-library-processing
 category = DATA
 sentence = A library to read from XLS (Excel) files
 paragraph =  XlsReader allows to read from .xls files as if they were a database
-version = 24
-prettyVersion = 0.1.2
+version = 37
+prettyVersion = 0.1.3
