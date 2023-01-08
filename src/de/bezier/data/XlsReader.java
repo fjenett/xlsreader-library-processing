@@ -471,7 +471,7 @@ public class XlsReader
 			}
 		}
 
-		return Null;
+		return null;
 	}
 	
 	/**
