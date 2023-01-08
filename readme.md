@@ -1,36 +1,26 @@
 
-XlsReader
+# XlsReader
 
-a Processing library that that provides access to .xls (Excel) files.
-
-----------------------------------------------------------------------------
+... a Processing library that that provides access to .xls (Excel) files.
 
 .xls files are a databaseske and widespread format. This library
 provides you with a simple iteratable reader.
 
-----------------------------------------------------------------------------
+## Installation
 
-Latest release (same as in the Processing library manager):
-https://raw.github.com/fjenett/xlsreader-library-processing/latest/release/XlsReader.zip
+Latest release:
+https://github.com/fjenett/xlsreader-library-processing/raw/latest/release/XlsReader.zip
 
-----------------------------------------------------------------------------
+Tested with Processing 3.x and 4.x.
 
-Last checked with Processing 2.0.1 but not intensively. Please report bugs /
-if you find any or suggestions if you have any here:
+## Contribute
+
+Please report bugs / if you find any or suggestions if you have any here:
 http://github.com/fjenett/xlsreader/issues
 
-----------------------------------------------------------------------------
-
-There's currently an unresolved issue that will prevent this library
-from working in (unsigned) applets.
-
-http://github.com/fjenett/xlsreader/issues#issue/1
-
-----------------------------------------------------------------------------
+---
 
 The library is based upon Apache POI - the Java API for Microsoft Docs
 http://poi.apache.org/
 
-----------------------------------------------------------------------------
-
-(c) fjenett - 2007-2013
+fjenett - 2007-2023
