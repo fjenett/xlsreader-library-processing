@@ -31,3 +31,6 @@ lib/poi-*
 XlsReader/*
 documentation/*
 library/*
+.idea/
+local.properties
+xlsreader-library-processing.iml
