@@ -3,6 +3,7 @@ package de.bezier.data;
 import processing.core.*;
 import java.io.*;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.poifs.filesystem.*;
 
 /**
@@ -401,7 +402,7 @@ public class XlsReader
 		if ( cellIterator.hasNext() )
 		{
 			cell = (HSSFCell)cellIterator.next();
-			cellNum = cell.getCellNum();
+			cellNum = cell.getColumnIndex();
 		}
 	}
 	
@@ -499,7 +500,7 @@ public class XlsReader
 		
 		if ( cell == null ) papplet.println( "ERR, getInt(): cell is null" );
 		
-		if ( !isCellType( cell, HSSFCell.CELL_TYPE_NUMERIC )) papplet.println( "ERR, getInt(): wrong celltype" );
+		if ( !isCellType( cell, CellType.NUMERIC )) papplet.println( "ERR, getInt(): wrong celltype" );
 		
 		int i;
 		try {
@@ -526,7 +527,7 @@ public class XlsReader
 		
 		if ( cell == null ) papplet.println( "ERR, getFloat(): cell is null" );
 		
-		if ( !isCellType( cell, HSSFCell.CELL_TYPE_NUMERIC )) papplet.println( "ERR, getFloat(): wrong celltype" );
+		if ( !isCellType( cell, CellType.NUMERIC )) papplet.println( "ERR, getFloat(): wrong celltype" );
 		
 		float i;
 		try {
@@ -553,7 +554,7 @@ public class XlsReader
 		
 		if ( cell == null ) papplet.println( "ERR, getString(): cell is null" );
 		
-		if ( !isCellType( cell, HSSFCell.CELL_TYPE_STRING )) papplet.println( "ERR, getString(): wrong celltype" );
+		if ( !isCellType( cell, CellType.STRING )) papplet.println( "ERR, getString(): wrong celltype" );
 		
 		String s = null;
 		try {
@@ -597,7 +598,7 @@ public class XlsReader
 	}
 	
 	
-	private boolean isCellType (HSSFCell _cell, int type)
+	private boolean isCellType (HSSFCell _cell, CellType type)
 	{
 		if ( _cell == null ) {
 			papplet.println("ERR, isCellType(): given cell is null.");
@@ -608,14 +609,14 @@ public class XlsReader
 		
 		switch ( _cell.getCellType() )
 		{
-			case HSSFCell.CELL_TYPE_STRING: 
-				papplet.println( "HSSFCell.CELL_TYPE_STRING" );
+			case STRING:
+				papplet.println( "CellType.STRING" );
 				break;
-			case HSSFCell.CELL_TYPE_NUMERIC: 
-				papplet.println( "HSSFCell.CELL_TYPE_NUMERIC" );
+			case NUMERIC:
+				papplet.println( "CellType.NUMERIC" );
 				break;
-			case HSSFCell.CELL_TYPE_BLANK: 
-				papplet.println( "HSSFCell.CELL_TYPE_BLANK" );
+			case BLANK:
+				papplet.println( "CellType.BLANK" );
 				break;
 		}
 		return false;
