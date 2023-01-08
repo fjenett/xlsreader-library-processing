@@ -24,7 +24,7 @@
 	<property name="author" 		value="Florian Jenett"/>
 	<property name="copyright" 		value="(c) 2007 - 2013"/>
 	<property name="libraryName"  	value="XlsReader"/>
-	<property name="versionNumber"  value="0.1.1"/>
+	<property name="versionNumber"  value="0.1.2"/>
 	<property name="yourLink"  		value="http://bezier.de/" />
 	<property name="keywords" 		value="Excel, reader, xls, data"/>
 	<property name="javaVersion" 	value="1.5"/>
@@ -100,7 +100,7 @@ java version		 ${javaVersion}
 	  	<mkdir dir="${dist}" />
 	  	<mkdir dir="${dist}/library" />
 	  	<mkdir dir="${dist}/examples" />
-	  	<mkdir dir="${dist}/documentation" />
+	  	<mkdir dir="${dist}/reference" />
 		
 	  	<jar jarfile="${dist}/library/${jarFile}" basedir="${bin}"/>
 
@@ -129,7 +129,7 @@ java version		 ${javaVersion}
 			</classpath>
 	 	</javadoc>
 
-		<copy todir="${dist}/documentation">
+		<copy todir="${dist}/reference">
 			<fileset dir="${javadoc}" />
 		</copy>
 	  	
@@ -142,13 +142,13 @@ java version		 ${javaVersion}
 
 	  	<!-- finish library's distribution -->
 	  	
-	  	<copy todir="${processing}/${libraryName}/documentation">
+	  	<copy todir="${processing}/${libraryName}/reference">
 			<fileset dir="${javadoc}" />
 		</copy>
 
 		<!-- add more -->
 
-		<copy todir="${dist}/source">
+		<copy todir="${dist}/src">
 			<fileset dir="${src}" />
 		</copy>
 
@@ -193,7 +193,7 @@ java version		 ${javaVersion}
 	  	<mkdir dir="web" />
 
 	  	<copy todir="web/documentation">
-	  		<fileset dir="${dist}/documentation" />
+	  		<fileset dir="${dist}/reference" />
 	  	</copy>
 	  	
 	  	<copy todir="web/examples">
